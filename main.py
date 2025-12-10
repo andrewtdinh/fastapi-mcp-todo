@@ -11,12 +11,6 @@ class Item(BaseModel):
     price: float
     in_stock: bool = True
 
-
-@app.post("/items/")
-async def create_item(item: Item):
-    fake_db.append(item.model_dump())
-    return item)
-
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -29,3 +23,12 @@ async def get_weather():
         "condition": "Sunny",
         "forecast": "Clear skies all day"
     }
+
+@app.post("/items")
+async def create_item(item: Item):
+    fake_db.append(item.dict())
+    return {"message": "Item created successfully", "item": item}
+
+@app.get("/items")
+async def read_items():
+    return {"items": fake_db}
